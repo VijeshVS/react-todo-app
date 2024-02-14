@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -7,9 +7,18 @@ import { Todos } from './components/Todos'
 import { Title } from './components/Title'
 
 function App() {
-
   const [todo,setTodo] = useState([])
 
+  useEffect(()=>{
+
+      const work = async ()=>{
+      const response = await fetch('http://todo-backed/todos')
+      const todos = await response.json()
+      setTodo(todos)
+    }
+    work();
+  },[])
+  
   return (
     <div>
       <Title/>
