@@ -4,7 +4,7 @@ export function Todos(props){
     return <div>
         {
         props.todos.map((todo,index)=>{
-            return <div>
+            return <div key = {todo.id}>
                 <h2>{todo.title}</h2>
                 <h3>{todo.description}</h3>
                 <button onClick={

@@ -45,6 +45,7 @@ export function RenderTodo(props){
                     return;
                 }
                 props.setTodo([...props.todo,{
+                    id: Math.floor(Math.random()*1000),
                     title: title,
                     description: desc
                 }])
