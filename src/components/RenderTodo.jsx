@@ -1,42 +1,17 @@
-import {useState} from "react";
+import {useState,memo} from "react";
 
-export function RenderTodo(props){
+export const RenderTodo = memo((props)=>{
     const [title,setTitle] = useState("")
     const [desc,setdesc] = useState("")
 
     return <div>
-        <label style={{
-            fontSize :20,
-            color:"yellow",
-            fontWeight : "bold"
-        }}>Title</label>
+        <label style={{fontSize :20,color:"yellow",fontWeight : "bold"}}>Title</label>
         
-        <input value = {title} style={
-            {
-                padding:10,
-                margin:10,
-                marginLeft:75
-            }
-        } type="text" onChange={
-            (e)=>{
-                setTitle(e.target.value)
-            }
-        }></input> <br />
-        <label style={{
-            fontSize :20,
-            color:"yellow",
-            fontWeight: "bold"
-        }}>Description</label>
-        <input value={desc} style={
-            {
-                padding:10,
-                margin:10
-            }
-        } type="text" onChange={
-            (e)=>{
-                setdesc(e.target.value)
-            }
-        }></input> <br />
+        <input value = {title} style={{padding:10,margin:10,marginLeft:75}} type="text" 
+        onChange={(e)=>setTitle(e.target.value)}></input><br/>
+        <label style={{fontSize :20,color:"yellow",fontWeight: "bold"}}>Description</label>
+        <input value={desc} style={{padding:10,margin:10}} type="text" 
+        onChange={(e)=>setdesc(e.target.value)}></input> <br />
         <button
         onClick={
             ()=>{
@@ -53,11 +28,6 @@ export function RenderTodo(props){
                 setdesc("")
             }
         } 
-        style={
-            {
-                margin:10,
-                padding:10
-            }
-        }>Add todo</button>
+        style={{margin:10,padding:10}}>Add todo</button>
     </div>
-}
+})

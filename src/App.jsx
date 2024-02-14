@@ -14,7 +14,6 @@ function App() {
     <div>
       <Title/>
       <RenderTodo todo = {todo} setTodo = {setTodo}> </RenderTodo>
-    
       <Todos setTodo = {setTodo} todos={todo}></Todos>
     </div>
   )

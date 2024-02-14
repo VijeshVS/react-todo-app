@@ -1,6 +1,6 @@
+import {memo} from 'react'
 
-
-export function Todos(props){
+export const Todos = memo((props)=>{
     return <div>
         {
         props.todos.map((todo,index)=>{
@@ -28,8 +28,9 @@ export function Todos(props){
 
                         props.setTodo(updatedTodo)
                     }
-                }>Remove Todo</button>
+                }>
+                    Remove Todo</button>
              </div>
         })}
     </div>
-}
+})
