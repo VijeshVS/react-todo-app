@@ -1,19 +1,23 @@
 
 import "./App.css";
 
-import {
-	BrowserRouter as Router
-} from "react-router-dom";
-
-import Routes from './Routes'
-
+import {BrowserRouter,Routes,Route} from "react-router-dom";
+import {Page404} from './Page404'
+import TodoPage from "./TodoPage";
+import { LoginPage } from "./LoginPage";
+import {RouterMain} from './components/RouterMain'
 
 function App() {
 	return (
 		<>
-			<Router>
-				<Routes/>
-			</Router>
+			<BrowserRouter>
+			<RouterMain/>
+			<Routes>
+				<Route path='/' element = {<LoginPage/>}/>
+				<Route path='/mytodos' element = {<TodoPage/>}/>
+				<Route path='*' element={<Page404/>}/>
+			</Routes>
+			</BrowserRouter>
 		</>
 	);
 }
