@@ -8,7 +8,8 @@ import { Title } from './components/Title'
 // Importing Link from react-router-dom to 
 // navigate to different end points.
  
-export const TodoPage = () => {
+
+const TodoPage = () => {
     const [todo,setTodo] = useState([])
 
     return (
@@ -19,5 +20,5 @@ export const TodoPage = () => {
         </div>
     );
 };
- 
+
 export default TodoPage;

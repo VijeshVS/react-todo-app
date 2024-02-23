@@ -3,9 +3,11 @@ import "./App.css";
 
 import {BrowserRouter,Routes,Route} from "react-router-dom";
 import {Page404} from './Page404'
-import TodoPage from "./TodoPage";
 import { LoginPage } from "./LoginPage";
 import {RouterMain} from './components/RouterMain'
+import React from 'react'
+
+const TodoPage = React.lazy(()=>import('./TodoPage'));
 
 function App() {
 	return (
