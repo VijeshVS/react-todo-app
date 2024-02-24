@@ -4,19 +4,19 @@ import './App.css'
 import { RenderTodo } from './components/RenderTodo'
 import { Todos } from './components/Todos'
 import { Title } from './components/Title'
-
-// Importing Link from react-router-dom to 
-// navigate to different end points.
- 
+import { todoContext } from './components/context'
 
 const TodoPage = () => {
     const [todo,setTodo] = useState([])
 
     return (
         <div>
+            <todoContext.Provider value = {todo} >
             <Title/>
-            <RenderTodo todo = {todo} setTodo = {setTodo}> </RenderTodo>
-            <Todos setTodo = {setTodo} todos={todo}></Todos>
+            <RenderTodo setTodo = {setTodo}> </RenderTodo>
+            <Todos setTodo = {setTodo} ></Todos>
+
+            </todoContext.Provider>
         </div>
     );
 };

@@ -1,15 +1,19 @@
-import {memo} from 'react'
+import {memo, useContext} from 'react'
+import { todoContext } from './context'
+
 
 export const Todos = memo((props)=>{
+    const todos = useContext(todoContext)
+
     return <div>
         {
-        props.todos.map((todo,index)=>{
+        todos.map((todo,index)=>{
             return <div key = {todo.id}>
                 <h2>{todo.title}</h2>
                 <h3>{todo.description}</h3>
                 <button onClick={
                     () =>{
-                        const updatedTodo = [...props.todos];
+                        const updatedTodo = [...todos];
                         if(updatedTodo[index].completed){
                             alert("Task is already completed!!")
                             return;
@@ -20,7 +24,7 @@ export const Todos = memo((props)=>{
                 }>{todo.completed == 1?"Completed":"Mark as Complete"}</button>
                 <button onClick={
                     ()=>{
-                        const updatedTodo = props.todos.filter((t)=>{
+                        const updatedTodo = todos.filter((t)=>{
                             if(todo.title != t.title || todo.description !=t.description){
                                 return true
                             }

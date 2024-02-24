@@ -1,8 +1,10 @@
-import {useState,memo} from "react";
+import {useState,memo, useContext} from "react";
+import { todoContext } from "./context";
 
 export const RenderTodo = memo((props)=>{
     const [title,setTitle] = useState("")
     const [desc,setdesc] = useState("")
+    const todo = useContext(todoContext)
 
     return <div>
         <label style={{fontSize :20,color:"yellow",fontWeight : "bold"}}>Title</label>
@@ -19,7 +21,7 @@ export const RenderTodo = memo((props)=>{
                     alert("Please fill the required fields")
                     return;
                 }
-                props.setTodo([...props.todo,{
+                props.setTodo([...todo,{
                     id: Math.floor(Math.random()*1000),
                     title: title,
                     description: desc
