@@ -38,16 +38,12 @@ export const Todos = memo(()=>{
                 <button onClick={
                     () =>{
                         const updatedTodo = [...todos];
-                        if(updatedTodo[index].completed){
-                            alert("Task is already completed!!")
-                            return;
+                        for(let i = 0;i<updatedTodo.length;i++){
+                            if(updatedTodo[i].id == todo.id){
+                                updatedTodo[i] = {...updatedTodo[i],completed:1}
+                            }
                         }
-                        setTodo((oldTodo)=>{
-                            const newTodos = [...oldTodo];
-                            newTodos[index] = {...newTodos[index],completed:true};
-                            return newTodos
-                        })
-                        
+                        setTodo(updatedTodo)
                     }
                 }>{todo.completed == 1?"Completed":"Mark as Complete"}</button>
                 <button onClick={
