@@ -1,9 +1,11 @@
-import {memo, useContext} from 'react'
-import { todoContext } from './context'
+import {memo} from 'react'
+
+import { useRecoilState } from 'recoil'
+import {todoAtom} from '../assets/store/atoms/TodoAtom'
 
 
 export const Todos = memo((props)=>{
-    const todos = useContext(todoContext)
+    const [todos,setTodo] = useRecoilState(todoAtom)
 
     return <div>
         {
@@ -18,8 +20,12 @@ export const Todos = memo((props)=>{
                             alert("Task is already completed!!")
                             return;
                         }
-                        updatedTodo[index].completed = 1;
-                        props.setTodo(updatedTodo)
+                        setTodo((oldTodo)=>{
+                            const newTodos = [...oldTodo];
+                            newTodos[index] = {...newTodos[index],completed:true};
+                            return newTodos
+                        })
+                        
                     }
                 }>{todo.completed == 1?"Completed":"Mark as Complete"}</button>
                 <button onClick={
@@ -30,7 +36,7 @@ export const Todos = memo((props)=>{
                             }
                         })
 
-                        props.setTodo(updatedTodo)
+                        setTodo(updatedTodo)
                     }
                 }>
                     Remove Todo</button>

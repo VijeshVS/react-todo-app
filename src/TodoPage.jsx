@@ -4,19 +4,17 @@ import './App.css'
 import { RenderTodo } from './components/RenderTodo'
 import { Todos } from './components/Todos'
 import { Title } from './components/Title'
-import { todoContext } from './components/context'
+import { RecoilRoot } from 'recoil'
 
 const TodoPage = () => {
-    const [todo,setTodo] = useState([])
-
+    
     return (
         <div>
-            <todoContext.Provider value = {todo} >
+            <RecoilRoot>
             <Title/>
-            <RenderTodo setTodo = {setTodo}> </RenderTodo>
-            <Todos setTodo = {setTodo} ></Todos>
-
-            </todoContext.Provider>
+            <RenderTodo/>
+            <Todos />
+            </RecoilRoot>
         </div>
     );
 };

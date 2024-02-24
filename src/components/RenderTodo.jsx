@@ -1,10 +1,11 @@
 import {useState,memo, useContext} from "react";
-import { todoContext } from "./context";
+import { useRecoilState } from "recoil";
+import { todoAtom } from "../assets/store/atoms/TodoAtom";
 
-export const RenderTodo = memo((props)=>{
+export const RenderTodo = memo(()=>{
     const [title,setTitle] = useState("")
     const [desc,setdesc] = useState("")
-    const todo = useContext(todoContext)
+    const [todo,setTodo] = useRecoilState(todoAtom)
 
     return <div>
         <label style={{fontSize :20,color:"yellow",fontWeight : "bold"}}>Title</label>
@@ -21,10 +22,11 @@ export const RenderTodo = memo((props)=>{
                     alert("Please fill the required fields")
                     return;
                 }
-                props.setTodo([...todo,{
+                setTodo([...todo,{
                     id: Math.floor(Math.random()*1000),
                     title: title,
-                    description: desc
+                    description: desc,
+                    completed: 0
                 }])
                 setTitle("")
                 setdesc("")
