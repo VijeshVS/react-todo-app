@@ -5,3 +5,7 @@ export const todoAtom = atom({
     default : []
 })
 
+export const searchAtom = atom({
+    key:'searchInput',
+    default: ''
+})
