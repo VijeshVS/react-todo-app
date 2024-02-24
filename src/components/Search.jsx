@@ -1,10 +1,20 @@
-
+import axios from 'axios'
 import { FcSearch } from "react-icons/fc";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { searchAtom } from "../assets/store/atoms/TodoAtom";
+import { searchAtom,todoAtom } from "../assets/store/atoms/TodoAtom";
+import { useEffect } from 'react';
+
 
 export const Search = () => { 
     const setsearchInput = useSetRecoilState(searchAtom);
+    const setTodos = useSetRecoilState(todoAtom)
+
+    useEffect(()=>{
+        axios.get('https://my-api').then((res)=>{
+            const data = res.data;
+            setTodos(data)
+        })
+    },[])
         
     return  <div style={{marginTop:20,position:'relative'}}>
     <FcSearch style={{fontSize:50,position:'absolute',bottom:0}}/>

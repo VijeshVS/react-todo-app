@@ -7,7 +7,7 @@ import { RecoilRoot } from 'recoil'
 import { Search } from './components/Search'
 
 const TodoPage = () => {
-    
+
     return (
         <div>
             <RecoilRoot>
