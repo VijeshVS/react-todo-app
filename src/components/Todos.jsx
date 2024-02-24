@@ -8,6 +8,7 @@ export const Todos = memo((props)=>{
     const [todos,setTodo] = useRecoilState(todoAtom)
 
     return <div>
+        
         {
         todos.map((todo,index)=>{
             return <div key = {todo.id}>
