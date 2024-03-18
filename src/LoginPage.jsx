@@ -1,8 +1,7 @@
-import { LoginComponents } from "./components/LoginComponents";
+import { LoginComponent } from "./components/LoginComponents";
 
 export function LoginPage(){
-    return <div>
-        <h1>Login Page</h1>
-        <LoginComponents/>
+    return <div className="h-screen w-full p-10">
+        <LoginComponent/>
     </div>
 }

@@ -11,9 +11,9 @@ const TodoPage = () => {
     return (
         <div>
             <RecoilRoot>
-            <Search/>
             <Title/>
             <RenderTodo/>
+            <Search/>
             <Todos />
             </RecoilRoot>
         </div>

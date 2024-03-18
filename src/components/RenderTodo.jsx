@@ -8,32 +8,28 @@ export const RenderTodo = memo(()=>{
     const [desc,setdesc] = useState("")
     const [todo,setTodo] = useRecoilState(todoAtom)
 
-    return <div>
+    const updateTodos = ()=>{
+        if(!title || !desc){
+            //notify
+            return;
+        }
+        setTodo([...todo,{
+            id: Math.floor(Math.random()*1000),
+            title: title,
+            description: desc,
+            completed: 0
+        }])
+        setTitle("")
+        setdesc("")
+    }
 
-        <label style={{fontSize :20,color:"yellow",fontWeight : "bold"}}>Title</label>
-        
-        <input value = {title} style={{padding:10,margin:10,marginLeft:75,width:250,fontSize:17}} type="text" 
-        onChange={(e)=>setTitle(e.target.value)}></input><br/>
-        <label style={{fontSize :20,color:"yellow",fontWeight: "bold"}}>Description</label>
-        <input value={desc} style={{padding:10,margin:10,width:250,fontSize:17}} type="text" 
-        onChange={(e)=>setdesc(e.target.value)}></input> <br />
-        <button
-        onClick={
-            ()=>{
-                if(!title || !desc){
-                    alert("Please fill the required fields")
-                    return;
-                }
-                setTodo([...todo,{
-                    id: Math.floor(Math.random()*1000),
-                    title: title,
-                    description: desc,
-                    completed: 0
-                }])
-                setTitle("")
-                setdesc("")
-            }
-        } 
-        style={{margin:10,padding:10}}>Add todo</button>
+    return <div className="flex flex-col h-fit items-center">
+        <h1 className="text-3xl font-bold text-red-700">My Todos</h1>
+        <input value = {title} placeholder="Enter the title"
+        type="text" className='mt-10 w-96 h-9 border-2 rounded-xl pl-2 text-md border-gray-400' onChange={(e)=>setTitle(e.target.value)}></input><br/>
+        <input value={desc}  placeholder="Enter the description"
+        type="text" className='w-96 h-9 border-2 rounded-xl pl-2 text-md border-gray-400' onChange={(e)=>setdesc(e.target.value)}></input> <br />
+        <button className='rounded-xl w-20 h-9 hover:scale-110 bg-black text-white font-bold text-sm'
+        onClick={updateTodos}>Add todo</button>
     </div>
 })
