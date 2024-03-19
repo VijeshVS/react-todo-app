@@ -24,7 +24,7 @@ export const RenderTodo = memo(()=>{
     }
 
     return <div className="flex flex-col h-fit items-center">
-        <h1 className="text-3xl font-bold text-red-700">My Todos</h1>
+        <h1 className="text-3xl mt-8 font-bold text-red-700">My Todos</h1>
         <input value = {title} placeholder="Enter the title"
         type="text" className='mt-10 w-96 h-9 border-2 rounded-xl pl-2 text-md border-gray-400' onChange={(e)=>setTitle(e.target.value)}></input><br/>
         <input value={desc}  placeholder="Enter the description"

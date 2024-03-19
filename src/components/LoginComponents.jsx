@@ -1,17 +1,19 @@
 import {memo, useState} from 'react'
 import { Spinner } from './Spinner';
+import { useNavigate } from 'react-router-dom';
 
 export const LoginComponent = memo(()=>{
     const [user,setUser] = useState("");
     const [pass,setPass] = useState("");
     const [load,setLoad] = useState(false);
+    const navigate = useNavigate()
 
     return <section className='drop-shadow-lg w-screen justify-center items-center min-h-screen flex '>
         <div className='bg-gray-100 flex rounded-2xl'>
             <div className='md:w-1/2 p-3'>
                 <h2 className='text-center font-bold text-3xl mt-3 text-gray-700'>Login</h2>
                 <h2 className='text-center mt-2 text-md text-gray-400'>Enter the information to get started</h2>
-                <div className='mt-28 flex justify-center flex-col p-8'>
+                <div className='mt-24 flex justify-center flex-col p-8'>
                 <input value = {user} onChange = {(e)=>setUser(e.target.value)} className='h-9 border-2 rounded-xl pl-2 text-md border-gray-400' placeholder = 'Enter your username' type='text'/>
                 <br />
                 <input value = {pass} onChange = {(e)=>setPass(e.target.value)} className='h-9 border-2 rounded-xl pl-2 text-md border-gray-400' placeholder='Enter your password' type='password'/>
@@ -23,7 +25,12 @@ export const LoginComponent = memo(()=>{
                     // if fail notify else navigate to todo/page
                 }} className='rounded-xl w-20 h-9 hover:scale-105 bg-black text-white font-bold text-md'>Signin</button>
                 </div>
-                {load?<div className='flex justify-center mt-10'>
+                <div className='flex mt-4 justify-center'>
+                <div className='text-sm text-center text-gray-600'>Don't have an account? </div> <div className='text-sm ml-1 text-blue-700 underline cursor-pointer' onClick={()=>{
+                    navigate('/register')
+                }}>Register</div>
+                </div>
+                {load?<div className='flex justify-center mt-6'>
                 <Spinner/>
                 </div>:<div></div>}
             </div>

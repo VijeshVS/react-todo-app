@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://neondb_owner:Je8nsEu2pCgF@ep-odd-mode-a571jgdd.us-east-2.aws.neon.tech/neondb?sslmode=require"
+}
+
+model User {
+  id Int @id @default(autoincrement())
+  userName String @unique
+  password String 
+  email String @unique
+  todo Todos[]
+}
+
+model Todos {
+  id Int @id @default(autoincrement())
+  title String
+  description String
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+}
