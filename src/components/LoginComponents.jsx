@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import {backendUrl} from '../config'
 import axios from 'axios'
 import { notify } from '../utils/notify';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer,toast } from 'react-toastify';
 
 export const LoginComponent = memo(()=>{
     const [user,setUser] = useState("");
@@ -24,10 +24,9 @@ export const LoginComponent = memo(()=>{
                 username: user,
                 password: pass
             })
-            notify("User logged in successfully!!",'s')
-            localStorage.setItem('token',"Bearer "+response.data.token);
             setLoad(false)
-            navigate('/mytodos')
+            localStorage.setItem('token',"Bearer "+response.data.token);
+            navigate('/mytodos') 
         }
         catch(e){
             setLoad(false)

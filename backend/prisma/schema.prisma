@@ -19,6 +19,7 @@ model Todos {
   id Int @id @default(autoincrement())
   title String
   description String
+  completed Boolean
   userId Int
   user User @relation(fields: [userId], references: [id])
 }

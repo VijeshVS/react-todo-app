@@ -1,49 +1,92 @@
-import {memo,useMemo} from 'react'
+import {memo,useEffect,useState} from 'react'
+import {Spinner} from './Spinner'
+import axios from 'axios'   
+import { backendUrl } from '../config'
+import {notify} from '../utils/notify'
+import { ToastContainer } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
+import { FcSearch } from "react-icons/fc";
 
-import { useRecoilState,useRecoilValue } from 'recoil'
-import {searchAtom, todoAtom} from '../assets/store/atoms/TodoAtom'
+export const Todos = memo(({update,setUpdate})=>{
+    const [todos,setTodo] = useState([])
+    const [load,setLoad] = useState(false)
+    const [filter,setFilter] = useState("")
 
+    const navigate = useNavigate();
 
-export const Todos = memo(()=>{
-    const [todos,setTodo] = useRecoilState(todoAtom)
-    const filterString = useRecoilValue(searchAtom)
+    async function getTodos (){
+        setLoad(true)
+        try{
+            const response = await axios.get(backendUrl+'/todos',{
+                headers:{
+                    Authorization : localStorage.getItem('token')
+                }
+            });
+            console.log(response)
+            setTodo(response.data.todos)
+            setLoad(false)
+    }
+    catch(e){
+        notify("User not authorized!!",'d');
+        navigate('/')
+    }
+    }
+
+    useEffect(()=>{
+        getTodos();
+    },[update])
     
-    const removeTodo  = (todo)=>{
-        const updatedTodo = todos.filter((t)=>{
-            if(todo.title != t.title || todo.description !=t.description){
-                return true
+    const removeTodo  = async (todo)=>{
+        setLoad(true)
+        console.log(todo)
+        await axios.post(backendUrl + '/todos/delete',{
+            todoId : todo.id
+        })
+        notify("Todo removed successfully !!",'s')
+        setLoad(false)
+        setUpdate(c => !c)
+    }
+
+    const completeTodo = async (todo) =>{
+        if(todo.completed){
+            notify("Task has already been completed!!",'d');
+            return;
+        }
+
+        await axios.post(backendUrl+'/todos/update',{
+            todoId: todo.id,
+            completed: true
+        })
+        setUpdate(c=>!c)
+    }
+
+    const filterTodos = () =>{
+        const new_todos = todos.filter((t)=>{
+            const title = t.title.toLowerCase();
+            const desc = t.description.toLowerCase();
+            const lower = filter.toLowerCase();
+            if(title.includes(lower) || desc.includes(lower)){
+                return true;
+            }
+            else{
+                return false;
             }
         })
-        setTodo(updatedTodo)
-    }
 
-    const completeTodo = (todo) =>{
-        const updatedTodo = [...todos];
-        for(let i = 0;i<updatedTodo.length;i++){
-            if(updatedTodo[i].id == todo.id){
-                updatedTodo[i] = {...updatedTodo[i],completed:1}
-            }
-        }
-        setTodo(updatedTodo)
-    }
-
-    function filterTodos(todos){
-        let filterFinal = filterString.trim();
-        if(filterFinal == ''){
+        if(!filter)
             return todos
-        }
-        let ans = []
-        todos.map((todo)=>{
-            if((todo.title).toLowerCase().includes(filterFinal.toLowerCase()) || todo.description.toLowerCase().includes(filterFinal.toLowerCase())){
-                console.log(filterFinal)
-                ans.push(todo)
-            }
-        })
-        return ans
+
+        return new_todos
     }
-    const filteredTodos = filterTodos(todos);
+
+    const filteredTodos = filterTodos();
 
     return <div className='flex flex-col items-center py-5'>
+        <div className="flex mt-4 mb-4 justify-center">
+        <FcSearch className="text-3xl"/> <input value={filter} onChange={(e)=>setFilter(e.target.value)} placeholder="Search Todos" className='ml-3 w-96 h-9 border-2 rounded-xl pl-2 text-md border-gray-400' type='text'/>
+        </div> 
+        <ToastContainer/>
+        {load?<Spinner/>:<div></div>}
         {filteredTodos.map((todo)=>{
             return <div className='mt-10' key = {todo.id}>
                 <h2 className='text-3xl font-bold text-center'>{todo.title}</h2>

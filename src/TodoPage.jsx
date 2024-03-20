@@ -2,18 +2,16 @@
 import './App.css'
 import { RenderTodo } from './components/RenderTodo'
 import { Todos } from './components/Todos'
-import { Title } from './components/Title'
 import { RecoilRoot } from 'recoil'
-import { Search } from './components/Search'
+import { useState } from 'react'
 
 const TodoPage = () => {
-
+    const [update,setUpdate] = useState(false)
     return (
         <div>
             <RecoilRoot>
-            <RenderTodo/>
-            <Search/>
-            <Todos />
+            <RenderTodo setUpdate={setUpdate}/>
+            <Todos update={update} setUpdate={setUpdate}/>
             </RecoilRoot>
         </div>
     );

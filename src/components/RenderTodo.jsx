@@ -1,29 +1,38 @@
-import {useState,memo, useContext} from "react";
-import { useRecoilState } from "recoil";
-import { todoAtom } from "../assets/store/atoms/TodoAtom";
+import {useState,memo} from "react";
+import { backendUrl } from "../config";
+import axios from 'axios'
+import { ToastContainer } from 'react-toastify'
+import { notify } from "../utils/notify";
+import { useNavigate } from "react-router-dom";
 
-
-export const RenderTodo = memo(()=>{
+export const RenderTodo = memo(({setUpdate})=>{
     const [title,setTitle] = useState("")
     const [desc,setdesc] = useState("")
-    const [todo,setTodo] = useRecoilState(todoAtom)
+    const navigate = useNavigate();
 
-    const updateTodos = ()=>{
-        if(!title || !desc){
-            //notify
-            return;
-        }
-        setTodo([...todo,{
-            id: Math.floor(Math.random()*1000),
-            title: title,
-            description: desc,
-            completed: 0
-        }])
+    function logout(){
+        localStorage.setItem('token',"")
+        notify("User logged out successfully!!",'d')
+        navigate('/')
+    }
+
+    const updateTodos = async ()=>{
+        await axios.post(backendUrl+'/todos',{
+                title:title,
+                description:desc
+            },{
+            headers:{
+                authorization : localStorage.getItem('token')
+            }
+        })
+        setUpdate(c=>!c)
         setTitle("")
         setdesc("")
     }
 
     return <div className="flex flex-col h-fit items-center">
+        <ToastContainer/>
+        <button onClick={logout} className="m-4 hover:scale-105 self-end font-bold text-white w-20 h-7 bg-black rounded-xl">Logout</button>
         <h1 className="text-3xl mt-8 font-bold text-red-700">My Todos</h1>
         <input value = {title} placeholder="Enter the title"
         type="text" className='mt-10 w-96 h-9 border-2 rounded-xl pl-2 text-md border-gray-400' onChange={(e)=>setTitle(e.target.value)}></input><br/>

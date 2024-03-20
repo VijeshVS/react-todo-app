@@ -84,7 +84,6 @@ app.get('/api/v1/todos',authMiddleware, async (req,res)=>{
 
 app.post('/api/v1/todos',authMiddleware,async(req,res)=>{
     const userId:any = req.headers.userId
-
     const title:string = req.body.title;
     const description:string = req.body.description;
 
@@ -92,7 +91,8 @@ app.post('/api/v1/todos',authMiddleware,async(req,res)=>{
         data: {
             title: title,
             description: description,
-            userId : userId
+            userId : userId,
+            completed: false
         }
     })
 
@@ -102,18 +102,15 @@ app.post('/api/v1/todos',authMiddleware,async(req,res)=>{
     })
 })
 
-app.put('/api/v1/todos',async(req,res)=>{
+app.post('/api/v1/todos/update',async(req,res)=>{
     const todoId = req.body.todoId;
-    const title = req.body.title;
-    const description = req.body.description;
+    const completed = req.body.completed
 
     const updater = {
-        title : '',
-        description: ''
+        completed: false
     }
 
-    if(title) updater.title = title
-    if(description) updater.description = description
+    if(completed) updater.completed = true
 
     await prisma.todos.update({
         where:{
@@ -128,7 +125,7 @@ app.put('/api/v1/todos',async(req,res)=>{
 
 })
 
-app.delete("/api/v1/todos",async(req,res)=>{
+app.post("/api/v1/todos/delete",async(req,res)=>{
     const todoId = req.body.todoId;
 
     await prisma.todos.delete({

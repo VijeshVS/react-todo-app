@@ -1,4 +1,4 @@
-import {toast,Bounce } from 'react-toastify';
+import {toast,Bounce, Flip } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export function notify(txt,type){
@@ -13,7 +13,7 @@ export function notify(txt,type){
             draggable: true,
             progress: undefined,
             theme: "dark",
-            transition: Bounce,
+            transition: Flip
             });
     } else if(type == 'd'){
         toast.error(txt, {
