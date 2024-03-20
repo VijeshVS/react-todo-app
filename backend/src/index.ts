@@ -3,12 +3,13 @@ import { PrismaClient } from "@prisma/client";
 import jwt from 'jsonwebtoken'
 import { jwtPassword } from "./config";
 import { authMiddleware } from "./authMiddleware";
-import { todo } from "node:test";
+import cors from 'cors'
 
 const app = express();
 const prisma = new PrismaClient();
 
 app.use(express.json())
+app.use(cors())
 
 app.post('/api/v1/register',async (req,res)=>{
     const username:string = req.body.username;
@@ -81,7 +82,7 @@ app.get('/api/v1/todos',authMiddleware, async (req,res)=>{
     })
 })
 
-app.post('/api/v1/todos',async(req,res)=>{
+app.post('/api/v1/todos',authMiddleware,async(req,res)=>{
     const userId:any = req.headers.userId
 
     const title:string = req.body.title;

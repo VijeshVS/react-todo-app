@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Spinner } from './Spinner';
 import { useNavigate } from "react-router-dom";
+import axios from 'axios'
+import {backendUrl} from '../config'
 
 export const Register = () =>{
     const [user,setUser] = useState("");
@@ -8,6 +10,26 @@ export const Register = () =>{
     const [mail,setMail] = useState("");
     const [load,setLoad] = useState(false);
     const navigate = useNavigate();
+
+    const registerFn = async ()=>{
+        setLoad(true)
+        try{
+            const response = await axios.post(backendUrl+'/register',{
+                username: user,
+                password: pass,
+                email: mail
+            })
+            //notification of login
+            // alert("Sucessfully logged in!!")
+            localStorage.setItem('token',"Bearer "+response.data.token);
+            setLoad(false)
+            navigate('/mytodos')
+        }
+        catch(e){
+            // alert("Some error has occured!!")
+            console.log(e)
+        }
+    }
 
     return <section className='drop-shadow-lg w-screen justify-center items-center min-h-screen flex '>
         <div className='bg-gray-100 flex rounded-2xl'>
@@ -22,11 +44,7 @@ export const Register = () =>{
                 <input value={pass} onChange={(e)=>setPass(e.target.value)} className='h-9 border-2 rounded-xl pl-2 text-md border-gray-400' placeholder='Enter your password' type='password'/>
                 </div>
                 <div className='flex justify-center'>
-                <button onClick={()=>{
-                    setLoad(true)
-                    // after the backend call do the required thing 
-                    // if fail notify else navigate to todo/page
-                }} className='rounded-xl w-20 h-9 hover:scale-105 bg-black text-white font-bold text-md'>Signup</button>
+                <button onClick={registerFn} className='rounded-xl w-20 h-9 hover:scale-105 bg-black text-white font-bold text-md'>Signup</button>
                 </div>
                 <div className='flex mt-4 justify-center'>
                 <div className='text-sm text-center text-gray-600'>Already have an account? </div> <div className='text-sm ml-1 text-blue-700 underline cursor-pointer' onClick={()=>{
