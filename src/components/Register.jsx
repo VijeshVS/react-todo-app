@@ -3,6 +3,8 @@ import { Spinner } from './Spinner';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios'
 import {backendUrl} from '../config'
+import { notify } from '../utils/notify';
+import { ToastContainer } from 'react-toastify';
 
 export const Register = () =>{
     const [user,setUser] = useState("");
@@ -12,6 +14,11 @@ export const Register = () =>{
     const navigate = useNavigate();
 
     const registerFn = async ()=>{
+        if(!user || !pass || !mail){
+            notify("Please enter the required fields !!",'d');
+            return;
+        }
+
         setLoad(true)
         try{
             const response = await axios.post(backendUrl+'/register',{
@@ -19,19 +26,23 @@ export const Register = () =>{
                 password: pass,
                 email: mail
             })
-            //notification of login
-            // alert("Sucessfully logged in!!")
+            notify("User registered successfully !!",'s')
             localStorage.setItem('token',"Bearer "+response.data.token);
             setLoad(false)
             navigate('/mytodos')
         }
         catch(e){
-            // alert("Some error has occured!!")
+            setLoad(false)
+            notify("Error signing up !!",'d')
+            setUser("")
+            setPass("")
+            setMail("")
             console.log(e)
         }
     }
 
     return <section className='drop-shadow-lg w-screen justify-center items-center min-h-screen flex '>
+        <ToastContainer /> 
         <div className='bg-gray-100 flex rounded-2xl'>
             <div className='md:w-1/2 p-3'>
                 <h2 className='text-center font-bold text-3xl mt-3 text-gray-700'>Register</h2>

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import {backendUrl} from '../config'
 import axios from 'axios'
 import { notify } from '../utils/notify';
+import { ToastContainer } from 'react-toastify';
 
 export const LoginComponent = memo(()=>{
     const [user,setUser] = useState("");
@@ -12,24 +13,33 @@ export const LoginComponent = memo(()=>{
     const navigate = useNavigate()
 
     const loginFn = async ()=>{
+        if(!user || !pass){
+            notify("Please enter required fields !!",'d');
+            return;
+        }
+
         setLoad(true)
         try{
             const response = await axios.post(backendUrl+'/login',{
                 username: user,
                 password: pass
             })
-            
+            notify("User logged in successfully!!",'s')
             localStorage.setItem('token',"Bearer "+response.data.token);
             setLoad(false)
             navigate('/mytodos')
         }
         catch(e){
-            // alert("Some error has occured!!")
+            setLoad(false)
+            setUser("")
+            setPass("")
+            notify("Error logging in!!",'d')
             console.log(e)
         }
     }
 
     return <section className='drop-shadow-lg w-screen justify-center items-center min-h-screen flex '>
+        <ToastContainer />
         <div className='bg-gray-100 flex rounded-2xl'>
             <div className='md:w-1/2 p-3'>
                 <h2 className='text-center font-bold text-3xl mt-3 text-gray-700'>Login</h2>
